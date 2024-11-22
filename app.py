@@ -2,17 +2,15 @@ from flask import Flask, request, jsonify, render_template
 import openai
 import os
 
-app = Flask(__name__, template_folder="C:\Users\ldhga\OneDrive\Desktop\dinnertonight\templates", static_folder="C:\Users\ldhga\OneDrive\Desktop\dinnertonight\static")
-
 from flask_cors import CORS
+
+app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
-
-
-
-
 
 # Set your OpenAI API key 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+if not openai.api_key:
+    raise ValueError("OpenAI API Key is missing.")
 
 
 @app.route("/", methods=["GET", "HEAD"])
@@ -53,6 +51,6 @@ def generate_bio():
         print("Error:", str(e))  # Debug log
         return jsonify({"error": str(e)}), 500
 
-
 if __name__ == "__main__":
+
     app.run(debug=True)
